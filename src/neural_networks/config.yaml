@@ -1,0 +1,45 @@
+# Parameters common for both RNN architectures
+General:
+  seed: 999 # if specified, use a seed for the random function
+  spacy_model: it_core_news_lg  # name of the spacy model to be loaded
+  pad_token: 0  # index of the padding token
+  oov_token: 1  # index of the out of vocabulary token
+  num_epochs: 100 # number of epochs to train the model if it's not using early stopping
+  use_early_stopping: True  # indicates if it uses early stopping or not
+  pretrained_word_embedding: False  # indicates if it uses a pretrained word embedding or not
+  architecture_type: siamese_nn # it can be "siamese_nn" or "smn" and it indicates which architecture to execute
+  optimizer_type: adagrad # name of the optimizer to be used. The supported optimizer are: "adagrad", "adam", "adamw", "sgd"
+  learning_rate: 0.001
+  batch_size: 32
+  max_sentence_length: 152  # maximum number of tokens per sentence
+  min_word_count: 1
+  rnn_cell_type: lstm # rnn cell type to be used in the architectures
+  word_embedding_size: 128  # size of the word embedding layer
+  gradient_clipping: 5
+  model_filepath: ./model.pt
+
+# parameters specific for the Siamese Neural Network
+SiameseNN:
+  bidirectional: True
+  hidden_size: 200
+  num_layers: 1
+  dropout: 0
+
+# parameters specific for the SMN architecture
+SMN:
+  kernel_size: (3, 3)
+  stride: (3, 3)
+  padding: (0, 0)
+  dilation: (1, 1)
+  stride_convolution: (1, 1)
+  num_matrices: 2
+  convolutional_channels: 8
+  final_rnn_units: 50
+  output_labels: 2
+  use_embedding_dropout: False
+  embedding_dropout_probability: 0
+  use_locked_dropout: False
+  embedding_locked_probability: 0
+  use_weight_dropout: False
+  embedding_weight_probability: 0
+  use_batch_normalization: False

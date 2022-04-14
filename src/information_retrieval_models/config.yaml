@@ -1,0 +1,6 @@
+General:
+  model_type: bm25  # it can be "tfidf" or "bm25" and it indicates which model to execute
+
+BM25:
+  k1: 1.5
+  b: 0.75
