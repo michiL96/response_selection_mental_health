@@ -10,6 +10,13 @@ from utilities import load_word_embeddings
 
 
 class SMN(nn.Module):
+    """
+    Pytorch implementation of the Sequential Matching Network realized
+    by Wu, Yu, et al.
+    "Sequential Matching Network: A New Architecture for Multi-turn Response Selection in Retrieval-Based Chatbots."
+    Proceedings of the 55th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers).
+    2017.
+    """
     def __init__(self, config: dict, vocabulary: CustomVocabulary, pad_token: int = 0, oov_token: int = 1):
         super(SMN, self).__init__()
 

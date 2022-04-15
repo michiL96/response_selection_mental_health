@@ -4,7 +4,8 @@ from BM25 import BM25F
 from TFIDF import TFIDF
 
 
-def train_predictors(training_filepath: str, model_type: str):
+def train_predictors(training_filepath: str, model_type: str, k1: int = 1.5, b: int = 0.75,
+                     spacy_model: str = 'it_core_news_lg'):
     data_train = []
     data = open(training_filepath)
     for line in data:
@@ -28,7 +29,7 @@ def train_predictors(training_filepath: str, model_type: str):
     if model_type == 'tfidf':
         conversation_predictor = TFIDF()
     elif model_type == 'bm25':
-        conversation_predictor = BM25F()
+        conversation_predictor = BM25F(k1=k1, b=b, spacy_model=spacy_model)
     else:
         return None
     conversation_predictor.train(contexts, responses)

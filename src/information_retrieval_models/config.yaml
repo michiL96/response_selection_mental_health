@@ -1,6 +1,12 @@
 General:
   model_type: bm25  # it can be "tfidf" or "bm25" and it indicates which model to execute
+  training_set_filepath: ../../data/training_set.csv
+  validation_set_filepath: ../../data/validation_set.csv
+  test_set_pool_size2_filepath: ../../data/test_set_pool_size_2.csv
+  test_set_pool_size10_filepath: ../../data/test_set_pool_size_10.csv
+  test_set_pool_size50_filepath: ../../data/test_set_pool_size_50.csv
 
 BM25:
+  spacy_model: it_core_news_lg  # name of the spacy model to be loaded
   k1: 1.5
   b: 0.75

@@ -7,17 +7,15 @@ from siamese_train_valid_test import SiameseTrainValidTest, get_batch, recall_at
 
 
 def execute_siamese_nn(config: dict, nlp):
-    training_filepath = "../../Data/FollowUpConv_Sislab_Idego_Selection_task_[Context,Response,Flag]_Train.csv"
+    training_filepath = config['General']['training_set_filepath']
     vocabulary, training_data = load_training_set(training_filepath, nlp, pad_token=config['General']['pad_token'],
                                                   oov_token=config['General']['oov_token'],
                                                   max_sentence_length=config['General']['max_sentence_length'])
     # Trim voc and pairs
     vocabulary.trim(config['General']['min_word_count'])
 
-    valid_filepath = "../../Data/poolSize2/FollowUpConv_Sislab_Idego_Selection_task_poolSize2[Context,Response,Flag]_A.csv"
+    valid_filepath = config['General']['validation_set_filepath']
     validation_data = load_validation_set(valid_filepath, nlp)
-    valid_filepath = "../../Data/poolSize2/FollowUpConv_Sislab_Idego_Selection_task_poolSize2[Context,Response,Flag]_B.csv"
-    validation_data += load_validation_set(valid_filepath, nlp)
     print("Validation set - Read {!s} sentence pairs".format(len(validation_data)))
 
     all_early_stopping = EarlyStopping(patience=3)
@@ -60,24 +58,20 @@ def execute_siamese_nn(config: dict, nlp):
             best_model = model
             torch.save(best_model.state_dict(), config['General']['model_filepath'])
 
-    test_filepath = "../../Data/poolSize2/FollowUpConv_Sislab_Idego_Selection_task_poolSize2[Context,Response,Flag]_C.csv"
+    test_filepath = config['General']['test_set_pool_size2_filepath']
     test_data = load_test_set(test_filepath, nlp)
-    test_filepath = "../../Data/poolSize2/FollowUpConv_Sislab_Idego_Selection_task_poolSize2[Context,Response,Flag]_D.csv"
-    test_data += load_test_set(test_filepath, nlp)
     print("Test set - Read {!s} sentence pairs".format(len(test_data)))
     counts = train_valid_test.test_phase(best_model, test_data, pool_size=2)
     recall_at_k(counts, len(test_data), 1, pool_size=2)
 
-    test_filepath = "../../Data/poolSize10/FollowUpConv_Sislab_Idego_Selection_task_poolSize10[Context,Response,Flag]_C.csv"
+    test_filepath = config['General']['test_set_pool_size10_filepath']
     test_data = load_test_set(test_filepath, nlp)
-    test_filepath = "../../Data/poolSize10/FollowUpConv_Sislab_Idego_Selection_task_poolSize10[Context,Response,Flag]_D.csv"
-    test_data += load_test_set(test_filepath, nlp)
     counts = train_valid_test.test_phase(best_model, test_data, pool_size=10)
     recall_at_k(counts, len(test_data), 1, pool_size=10)
     recall_at_k(counts, len(test_data), 3, pool_size=10)
     recall_at_k(counts, len(test_data), 5, pool_size=10)
 
-    test_filepath = "../../Data/poolSize50/FollowUpConv_Sislab_Idego_Selection_task_poolSize50[Context,Response,Flag]_C+D.csv"
+    test_filepath = config['General']['test_set_pool_size50_filepath']
     test_data = load_test_set(test_filepath, nlp)
     counts = train_valid_test.test_phase(best_model, test_data, pool_size=50)
     recall_at_k(counts, len(test_data), 1, pool_size=50)
